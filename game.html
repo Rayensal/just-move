@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <title> just move</title>
+  <head>
+    <style>
+      #rectangle {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background-color: #900C3F;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="rectangle"></div>
+    <script>
+      // Get the rectangle element
+      const rectangle = document.getElementById('rectangle');
+      
+      // Set the starting position and velocity
+      let x = 0;
+      let y = 0;
+      let xVelocity = 0;
+      let yVelocity = 0;
+      
+      // Set up the event listeners for key presses
+      document.addEventListener('keydown', event => {
+        switch (event.key) {
+          case 'ArrowLeft':
+            xVelocity = -5;
+            break;
+          case 'ArrowRight':
+            xVelocity = 5;
+            break;
+          case 'ArrowUp':
+            yVelocity = -10;
+            break;
+        }
+      });
+      
+      document.addEventListener('keyup', event => {
+        switch (event.key) {
+          case 'ArrowLeft':
+          case 'ArrowRight':
+            xVelocity = 0;
+            break;
+        }
+      });
+      
+      // Update the position of the rectangle every frame
+      function update() {
+        // Update the position
+        x += xVelocity;
+        y += yVelocity;
+        
+        // Apply gravity
+        yVelocity += 1;
+        
+        // Clamp the position to the screen bounds
+        if (x < 0) {
+          x = 0;
+        } else if (x > window.innerWidth - rectangle.offsetWidth) {
+          x = window.innerWidth - rectangle.offsetWidth;
+        }
+        
+        if (y < 0) {
+          y = 0;
+        } else if (y > window.innerHeight - rectangle.offsetHeight) {
+          y = window.innerHeight - rectangle.offsetHeight;
+          yVelocity = 0;
+        }
+        
+        // Update the position of the rectangle
+        rectangle.style.left = x + 'px';
+        rectangle.style.top = y + 'px';
+        
+        // Request the next frame
+        window.requestAnimationFrame(update);
+      }
+      
+      // Start the game loop
+      window.requestAnimationFrame(update);
+    </script>
+  </body>
+</html>
